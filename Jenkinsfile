@@ -1,10 +1,10 @@
-pipeline{
+pipeline {
     agent any
 
     stages {
         stage('Checkout code') {
             steps {
-                git branch: 'main', url: 'https://github.com/yankoov/SeleniumIdeJenkinsWorkshop2.git'              
+                git branch: 'main', url: 'https://github.com/yankoov/SeleniumIdeJenkinsWorkshop2.git'
             }
         }
 
@@ -35,7 +35,7 @@ pipeline{
                 script {
                     bat '''
                     echo Building the .NET project
-                    dotnet build 
+                    dotnet build
                     '''
                 }
             }
@@ -55,7 +55,12 @@ pipeline{
 
     post {
         always {
-            archiveArtifacts artifacts: '**/test_results.trx', allowEmptyArchive: true            
+            archiveArtifacts artifacts: '**/test_results.trx', allowEmptyArchive: true
+
+            step([
+                $class: 'MSTestPublisher',
+                testResultsFile: '**/TestResults/*.trx'
+            ])
         }
     }
 }
