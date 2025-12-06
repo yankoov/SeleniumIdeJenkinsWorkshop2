@@ -1,4 +1,4 @@
-pipeline {
+pipeline{
     agent any
 
     stages {
@@ -11,10 +11,10 @@ pipeline {
         stage('Setup .net') {
             steps {
                 script {
-                    bat """
+                    bat '''
                     echo Setting up .NET 8.0 SDK
                     choco install dotnet-8.0-sdk -y
-                    """
+                    '''
                 }
             }
         }
@@ -22,10 +22,10 @@ pipeline {
         stage('Restore dependencies') {
             steps {
                 script {
-                    bat """
+                    bat '''
                     echo Restoring .NET dependencies
                     dotnet restore
-                    """
+                    '''
                 }
             }
         }
@@ -33,10 +33,10 @@ pipeline {
         stage('Build project') {
             steps {
                 script {
-                    bat """
+                    bat '''
                     echo Building the .NET project
                     dotnet build --configuration Debug
-                    """
+                    '''
                 }
             }
         }
@@ -44,10 +44,10 @@ pipeline {
         stage('Run tests') {
             steps {
                 script {
-                    bat """
+                    bat '''
                     echo Running tests
-                    dotnet test SeleniumIde.sln --logger "trx;LogFileName=SeleniumIDE/TestResults/test_results.trx"
-                    """
+                    dotnet test SeleniumIde.sln --logger "trx;LogFileName=test_results.trx"
+                    '''
                 }
             }
         }
@@ -56,10 +56,8 @@ pipeline {
     post {
         always {
             echo "Archiving test results..."
-
-            archiveArtifacts artifacts: 'SeleniumIDE/TestResults/test_results.trx', allowEmptyArchive: true
-            
-            junit 'SeleniumIDE/TestResults/test_results.trx'
+            archiveArtifacts artifacts: '**/test_results.trx', allowEmptyArchive: true
+            junit '**/test_results.trx'
         }
     }
 }
