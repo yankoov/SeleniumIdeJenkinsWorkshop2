@@ -4,7 +4,7 @@ pipeline{
     stages {
         stage('Checkout code') {
             steps {
-                git branch: 'main', url: 'https://github.com/yankoov/SeleniumIdeJenkinsWorkshop2.git'
+                git branch: 'main', url: 'https://github.com/yankoov/SeleniumIdeJenkinsWorkshop2.git'              
             }
         }
 
@@ -35,7 +35,7 @@ pipeline{
                 script {
                     bat '''
                     echo Building the .NET project
-                    dotnet build --configuration Debug
+                    dotnet build 
                     '''
                 }
             }
@@ -55,10 +55,7 @@ pipeline{
 
     post {
         always {
-            echo "Archiving test results..."
-
-            archiveArtifacts artifacts: 'SeleniumIDE/TestResults/*.trx', allowEmptyArchive: true
-            junit 'SeleniumIDE/TestResults/*.trx'
+            archiveArtifacts artifacts: '**/test_results.trx', allowEmptyArchive: true            
         }
     }
 }
