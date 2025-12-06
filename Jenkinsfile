@@ -46,7 +46,8 @@ pipeline{
                 script {
                     bat '''
                     echo Running tests
-                    dotnet test SeleniumIde.sln --logger "trx;LogFileName=test_results.trx"
+                    dotnet test SeleniumIde.sln --logger "trx;LogFileName=TestResults/test_results.trx"
+
                     '''
                 }
             }
@@ -56,7 +57,8 @@ pipeline{
     post {
         always {
             archiveArtifacts artifacts: '**/test_results.trx', allowEmptyArchive: true
-            junit '**/TestResults/*.trx'
+            junit 'SeleniumIDE/TestResults/test_results.trx'
+
         }
     }
 }
