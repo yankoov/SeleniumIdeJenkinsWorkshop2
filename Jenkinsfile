@@ -56,8 +56,8 @@ pipeline{
     post {
         always {
             echo "Archiving test results..."
-            archiveArtifacts artifacts: '**/test_results.trx', allowEmptyArchive: true
-            junit '**/test_results.trx'
+            archiveArtifacts artifacts: 'SeleniumIDE/TestResults/**/*.trx', allowEmptyArchive: true
+            junit 'SeleniumIDE/TestResults/**/*.trx'
         }
     }
 }
